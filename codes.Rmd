@@ -6,13 +6,13 @@ output:
   beamer_presentation:
     keep_tex: true
 ---
-<!-- https://garrettgman.github.io/rmarkdown/beamer_presentation_format.html -->
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ## R Markdown
+
+<!-- https://garrettgman.github.io/rmarkdown/beamer_presentation_format.html -->
 
 This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
