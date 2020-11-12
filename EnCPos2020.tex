@@ -1,0 +1,76 @@
+%\documentclass[9pt]{beamer} 
+\documentclass{beamer} 	%del imecc
+\usepackage{beamerthemeshadow}
+\usepackage{amsmath, amssymb, amsfonts, textcomp}
+%=========================================================================================
+\usepackage[brazilian]{babel}
+% \usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc} % 
+\usepackage{ragged2e}
+\justifying
+\setbeamertemplate{bibliography item}{[\theenumiv]}
+\definecolor{airforceblue}{rgb}{0.36, 0.54, 0.66}
+	%\definecolor{blue(ryb)}{rgb}{0.01, 0.28, 1.0}
+\usetheme{Ilmenau}			% estilo y color de la presentacio
+%\usetheme{JuanLesPins}		% estilo y color de la presentacio
+\setbeamercolor{structure}{fg=airforceblue}
+\mode<presentation>
+\usepackage{times}
+\usepackage[T1]{fontenc}	 %  
+\usepackage{pgf, tikz}
+\usetikzlibrary{arrows}
+\usepackage{ stmaryrd }
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\usepackage{bbm}
+\usepackage{eufrak}
+\usepackage[mathscr]{euscript}
+\usefonttheme{serif}
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% \pgfdeclareimage[height=1.0cm]{logo}{logounicamp}
+\pgfdeclareimage[height=1.0cm]{encpos2020}{Figuras/encpos2020}
+\logo{\pgfuseimage{encpos2020}}
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+% figura 
+\usepackage{subfig}
+% \captionsetup[subfigure]{style=default, margin=0pt, parskip=0pt, hangindent=0pt, indention=0pt, singlelinecheck=true, labelformat=parens, labelsep=space}
+% Caso queira guardar as figuras em uma pasta separada% - - - - - - - - - - - - - - - - - - - - 
+% (descomente e) defina o caminho para o diretório:
+%\graphicspath{{./figuras/}}
+
+% Customizar as legendas de figuras e tabelas
+\usepackage{caption}
+\usepackage{empheq}
+
+\newcommand{\vazio}{\emptyset}
+\newcommand{\set}[1]{\left\{#1\right\}}
+
+\begin{document}
+%%TÍTULO-------------------------------------------
+\author{Autor(es)}
+\title{Título}
+\institute{Universidade}
+\titlegraphic{\includegraphics[width=1cm]{Figuras/imecc.png}~\includegraphics[width=1cm]{Figuras/logounicamp.png}}
+\date{\today}
+
+\frame{\maketitle}
+
+\AtBeginSection[]
+{  \begin{frame}<beamer>{Conteúdo}
+    \tableofcontents[currentsection]
+  \end{frame}}
+%% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+% Conteudo do trabalho
+\input{conteudo}
+
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+%\frame{ \frametitle{Principais Refer\^encias }
+
+%\begin{enumerate}
+%  \item
+%  \item 
+%\end{enumerate}
+%}
+%\emd{frame}
+\end{document}
+
