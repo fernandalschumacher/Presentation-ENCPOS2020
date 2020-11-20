@@ -125,6 +125,7 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{verbatim}
 
 \title{EncPos}
 \author{Fernanda Lang Schumacher}
@@ -133,25 +134,34 @@
 \begin{document}
 \frame{\titlepage}
 
-\begin{frame}
+\begin{frame}{Motivation: sleepstudy data}
+\protect\hypertarget{motivation-sleepstudy-data}{}
+
+\begin{itemize}
+\tightlist
+\item
+  The average reaction time per day for subjects was evaluated by
+  Gregory et al.~(2003) in a sleep deprivation study.
+\item
+  On day 0 the subjects had their normal amount of sleep and starting
+  that night they were restricted to 3 hours of sleep per night for 9
+  days, and the reaction time basead on a series of tests was measured
+  on each day for each subject.
+\item
+  The data are avaliable at the R package \emph{lme4}.
+\end{itemize}
 
 \end{frame}
 
-\begin{frame}{R Markdown}
-\protect\hypertarget{r-markdown}{}
+\begin{frame}{Motivation: sleepstudy data}
+\protect\hypertarget{motivation-sleepstudy-data-1}{}
 
-This is an R Markdown presentation. Markdown is a simple formatting
-syntax for authoring HTML, PDF, and MS Word documents. For more details
-on using R Markdown see \url{http://rmarkdown.rstudio.com}.
-
-When you click the \textbf{Knit} button a document will be generated
-that includes both content as well as the output of any embedded R code
-chunks within the document.
+\begin{center}\includegraphics[width=0.85\linewidth]{codes_files/figure-beamer/data-1} \end{center}
 
 \end{frame}
 
-\begin{frame}{Slide with Bullets}
-\protect\hypertarget{slide-with-bullets}{}
+\begin{frame}{Introduction}
+\protect\hypertarget{introduction}{}
 
 \begin{itemize}
 \tightlist
@@ -165,24 +175,122 @@ chunks within the document.
 
 \end{frame}
 
-\begin{frame}[fragile]{Slide with R Output}
-\protect\hypertarget{slide-with-r-output}{}
+\begin{frame}{Linear mixed models}
+\protect\hypertarget{linear-mixed-models}{}
+
+\end{frame}
+
+\begin{frame}[fragile]{Fitting a LMM to the sleepstudy dataset}
+\protect\hypertarget{fitting-a-lmm-to-the-sleepstudy-dataset}{}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{summary}\NormalTok{(cars)}
+\NormalTok{fit1 <-}\StringTok{ }\KeywordTok{lme}\NormalTok{(Reaction}\OperatorTok{~}\NormalTok{Days,}\DataTypeTok{data=}\NormalTok{sleepstudy,}
+            \DataTypeTok{random=}\OperatorTok{~}\NormalTok{Days}\OperatorTok{|}\NormalTok{Subject)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00
-\end{verbatim}
+\begin{center}\includegraphics[width=0.7\linewidth]{codes_files/figure-beamer/fit1plot-1} \end{center}
+
+\end{frame}
+
+\begin{frame}{Model formulation}
+\protect\hypertarget{model-formulation}{}
+
+\end{frame}
+
+\begin{frame}{Within-subject dependence structures}
+\protect\hypertarget{within-subject-dependence-structures}{}
+
+\end{frame}
+
+\begin{frame}{Tools for model evaluation}
+\protect\hypertarget{tools-for-model-evaluation}{}
+
+\end{frame}
+
+\begin{frame}[fragile]{The \texttt{R} package \emph{skewlmm}}
+\protect\hypertarget{the-package}{}
+
+\begin{itemize}
+\item
+  The package \emph{skewlmm} implemets an EM-type algorithm in
+  \texttt{R} using S3 class, containing methods for estimating and
+  predicting the SMSN-LMM.
+\item
+  It has an user-friendly interface with generic \texttt{R} functions
+  \texttt{print}, \texttt{summary}, \texttt{plot}, \texttt{fitted},
+  \texttt{residuals} and \texttt{predict} implemented.
+\item
+  The main functions in the package are the \texttt{smsn.lmm()} and
+  \texttt{smn.lmm()} functions, which estimates the parameter of a
+  SMSN-LMM and a SMN-LMM, respectively.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{The \texttt{R} package \emph{skewlmm}}
+\protect\hypertarget{the-package-1}{}
+
+\begin{itemize}
+\tightlist
+\item
+  The basic syntax of these functions is as follows:
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{smsn.lmm}\NormalTok{(data, formFixed, groupVar, formRandom, }
+\NormalTok{         depStruct, distr, ...)}
+\KeywordTok{smn.lmm}\NormalTok{(data, formFixed, groupVar, formRandom, }
+\NormalTok{        depStruct, distr, ...)}
+\end{Highlighting}
+\end{Shaded}
+
+where
+
+\begin{itemize}
+\item
+  \texttt{data}: A data frame containing all the variables to be used in
+  the model.
+\item
+  \texttt{formFixed}: A two-sided linear formula object describing the
+  fixed effects part of the model.
+\item
+  \texttt{groupVar}: A character containing the name of the variable
+  which represents the subjects or groups in data.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+\begin{itemize}
+\item
+  \texttt{formRandom}: A one-sided linear formula object describing the
+  random effects part of the model.
+\item
+  \texttt{depStruct}: A character indicating which dependence structure
+  should be used.
+\item
+  \texttt{distr}: A character indicating which distribution should be
+  used.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{References}
+\protect\hypertarget{references}{}
+
+\begin{itemize}
+\tightlist
+\item
+  Gregory Belenky, Nancy J. Wesensten, David R. Thorne, Maria L. Thomas,
+  Helen C. Sing, Daniel P. Redmond, Michael B. Russo and Thomas J.
+  Balkin (2003) Patterns of performance degradation and restoration
+  during sleep restriction and subsequent recovery: a sleep
+  dose-response study. Journal of Sleep Research 12, 1--12.
+\end{itemize}
 
 \end{frame}
 

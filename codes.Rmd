@@ -2,31 +2,100 @@
 title: "EncPos"
 author: "Fernanda Lang Schumacher"
 date: "23/11/2020"
+header-includes:
+   - \usepackage{verbatim}
 output: 
   beamer_presentation:
     keep_tex: true
 ---
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, cache=TRUE, fig.width = 6, fig.height = 4, fig.align = 'center')
+library(tidyverse,quietly = T)
+library(lme4,quietly = T)
+library(nlme,quietly = T)
+library(skewlmm,quietly = T)
 ```
 
-## R Markdown
+## Motivation: sleepstudy data
 
 <!-- https://garrettgman.github.io/rmarkdown/beamer_presentation_format.html -->
+- The average reaction time per day for subjects was evaluated by Gregory et al. (2003) in a sleep deprivation study. 
+- On day 0 the subjects had their normal amount of sleep and starting that night they were restricted to 3 hours of sleep per night for 9 days, and the reaction time basead on a series of tests was measured on each day for each subject. 
+- The data are avaliable at the R package \emph{lme4}.
 
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## Motivation: sleepstudy data
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+```{r data, out.width = '85%'}
+data(sleepstudy)
 
-## Slide with Bullets
+ggplot(sleepstudy,aes(x=Days,y=Reaction,group=Subject)) + geom_line(alpha=.3) + 
+  geom_point(alpha=.3) +stat_summary(aes(group = 1),geom = "line", fun= mean, colour="blue") +
+  theme_minimal()
+```
+
+## Introduction
 
 - Bullet 1
 - Bullet 2
 - Bullet 3
 
-## Slide with R Output
+## Linear mixed models
 
-```{r cars, echo = TRUE}
-summary(cars)
+## Fitting a LMM to the sleepstudy dataset
+
+<!-- ctrl + alt + i -->
+```{r fit1, echo=TRUE}
+fit1 <- lme(Reaction~Days,data=sleepstudy,
+            random=~Days|Subject)
 ```
+
+```{r fit1plot, out.width = '70%'}
+gridExtra::grid.arrange(ggplot(data = nlme::ranef(fit1),aes(x=`(Intercept)`)) + geom_density() + theme_minimal(),
+ggplot(data = nlme::ranef(fit1),aes(sample=`(Intercept)`)) +  geom_qq() +geom_qq_line() + theme_minimal(),
+ggplot(data = nlme::ranef(fit1),aes(x=`Days`)) + geom_density() + theme_minimal(),
+ggplot(data = nlme::ranef(fit1),aes(sample=`Days`)) +  geom_qq() +geom_qq_line() + theme_minimal())
+```
+
+
+## Model formulation
+
+## Within-subject dependence structures
+
+## Tools for model evaluation
+
+## The \texttt{R} package \emph{skewlmm}
+
+- The package \emph{skewlmm} implemets an EM-type algorithm in \texttt{R} using S3 class, containing methods for estimating and predicting the SMSN-LMM.
+
+- It has an user-friendly interface with generic \texttt{R} functions `print`, `summary`, `plot`, `fitted`, `residuals` and `predict` implemented. 
+
+- The main functions in the package are the `smsn.lmm()` and `smn.lmm()` functions, which estimates the parameter of a SMSN-LMM and a SMN-LMM, respectively.
+
+## The \texttt{R} package \emph{skewlmm}
+
+- The basic syntax of these functions is as follows:
+```{r sintax, eval=FALSE, echo=TRUE}
+smsn.lmm(data, formFixed, groupVar, formRandom, 
+         depStruct, distr, ...)
+smn.lmm(data, formFixed, groupVar, formRandom, 
+        depStruct, distr, ...)
+```
+where
+
+- `data`: A data frame containing all the variables to be used in the model.
+
+- `formFixed`: A two-sided linear formula object describing the fixed effects part of the model.
+
+- `groupVar`: A character containing the name of the variable which represents the subjects or groups in data.
+
+***
+- `formRandom`: A one-sided linear formula object describing the random effects part of the model.
+
+- `depStruct`: A character indicating which dependence structure should be used.
+
+- `distr`: A character indicating which distribution should be used.
+
+## References
+
+- Gregory Belenky, Nancy J. Wesensten, David R. Thorne, Maria L. Thomas, Helen C. Sing, Daniel P. Redmond, Michael B. Russo and Thomas J. Balkin (2003) Patterns of performance degradation and restoration during sleep restriction and subsequent recovery: a sleep dose-response study. Journal of Sleep Research 12, 1–12.
 
