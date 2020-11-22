@@ -4,16 +4,19 @@ author: "Fernanda Lang Schumacher"
 date: "23/11/2020"
 header-includes:
    - \usepackage{verbatim}
+   - \usepackage{multicol}
 output: 
   beamer_presentation:
     keep_tex: true
 ---
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, cache=TRUE, fig.width = 6, fig.height = 4, fig.align = 'center')
 library(tidyverse,quietly = T)
 library(lme4,quietly = T)
 library(nlme,quietly = T)
 library(skewlmm,quietly = T)
+library(gridExtra,quietly = T)
 ```
 
 ## Motivation: sleepstudy data
@@ -45,17 +48,16 @@ ggplot(sleepstudy,aes(x=Days,y=Reaction,group=Subject)) + geom_line(alpha=.3) +
 
 <!-- ctrl + alt + i -->
 ```{r fit1, echo=TRUE}
-fit1 <- lme(Reaction~Days,data=sleepstudy,
+fitlme <- lme(Reaction~Days,data=sleepstudy,
             random=~Days|Subject)
 ```
 
 ```{r fit1plot, out.width = '70%'}
-gridExtra::grid.arrange(ggplot(data = nlme::ranef(fit1),aes(x=`(Intercept)`)) + geom_density() + theme_minimal(),
-ggplot(data = nlme::ranef(fit1),aes(sample=`(Intercept)`)) +  geom_qq() +geom_qq_line() + theme_minimal(),
-ggplot(data = nlme::ranef(fit1),aes(x=`Days`)) + geom_density() + theme_minimal(),
-ggplot(data = nlme::ranef(fit1),aes(sample=`Days`)) +  geom_qq() +geom_qq_line() + theme_minimal())
+grid.arrange(ggplot(data = nlme::ranef(fitlme),aes(x=`(Intercept)`)) + geom_density() + theme_minimal(),
+ggplot(data = nlme::ranef(fitlme),aes(sample=`(Intercept)`)) +  geom_qq() +geom_qq_line() + theme_minimal(),
+ggplot(data = nlme::ranef(fitlme),aes(x=`Days`)) + geom_density() + theme_minimal(),
+ggplot(data = nlme::ranef(fitlme),aes(sample=`Days`)) +  geom_qq() +geom_qq_line() + theme_minimal())
 ```
-
 
 ## Model formulation
 
@@ -73,7 +75,7 @@ ggplot(data = nlme::ranef(fit1),aes(sample=`Days`)) +  geom_qq() +geom_qq_line()
 
 ## The \texttt{R} package \emph{skewlmm}
 
-- The basic syntax of these functions is as follows:
+The basic syntax of these functions is as follows:
 ```{r sintax, eval=FALSE, echo=TRUE}
 smsn.lmm(data, formFixed, groupVar, formRandom, 
          depStruct, distr, ...)
@@ -93,7 +95,241 @@ where
 
 - `depStruct`: A character indicating which dependence structure should be used.
 
-- `distr`: A character indicating which distribution should be used.
+- `distr`: A character indicating which distribution should be used.\pause
+
+Some other useful arguments:
+
+- `timeVar`: A character containing the name of the variable which represents the time in data.
+
+- `initialValues`: A named list containing initial parameter values.
+
+- `pAR`: The order of the autoregressive process that should be used (if depStruct="ARp").
+
+***
+
+The functions return an object of the class `SMSN` and `SMN`, respectively, containing a list of elements, and the following methods/functions are available to these classes:
+
+<!-- \begin{multicols}{2} -->
+- `print`
+
+- `summary`
+
+- `fitted`
+
+- `plot`
+
+- `predict`
+
+- `residuals`
+
+- `ranef`
+
+- `acfresid`
+
+- `healy.plot`
+
+- `lr.test`
+
+- `mahalDist`
+<!-- \end{multicols} -->
+
+## Example: sleepstudy
+
+\tiny
+```{r fit0, echo=T}
+fit0<-smn.lmm(data=sleepstudy,formFixed = Reaction~Days,
+              formRandom = ~Days,groupVar = "Subject",quiet = T)
+fit0
+```
+***
+\tiny
+```{r fitskew0, echo=T}
+fitskew0<-smsn.lmm(data=sleepstudy,formFixed = Reaction~Days,
+              formRandom = ~Days,groupVar = "Subject",quiet = T)
+fitskew0
+```
+
+## Changing the distribution
+\scriptsize
+```{r fit2, echo=T}
+fit1<-smn.lmm(data=sleepstudy,formFixed = Reaction~Days,distr = 't',
+              formRandom = ~Days,groupVar = "Subject",quiet = T)
+fitskew1<-smsn.lmm(data=sleepstudy,formFixed = Reaction~Days,distr = 'st',
+                  formRandom = ~Days,groupVar = "Subject",quiet = T)
+fit2<-smn.lmm(data=sleepstudy,formFixed = Reaction~Days,distr = 'sl',
+              formRandom = ~Days,groupVar = "Subject",quiet = T)
+fitskew2<-smsn.lmm(data=sleepstudy,formFixed = Reaction~Days,distr = 'ssl',
+                  formRandom = ~Days,groupVar = "Subject",quiet = T)
+fit3<-smn.lmm(data=sleepstudy,formFixed = Reaction~Days,distr = 'cn',
+              formRandom = ~Days,groupVar = "Subject",quiet = T)
+fitskew3<-smsn.lmm(data=sleepstudy,formFixed = Reaction~Days,distr = 'scn',
+                  formRandom = ~Days,groupVar = "Subject",quiet = T)
+```
+
+## Comparing the fitted models
+```{r fit3, echo=F}
+data.frame(distr=c('norm','sn','t','st','sl','ssl','cn','scn'),
+rbind(unlist(fit0$criteria), 
+      unlist(fitskew0$criteria),
+      unlist(fit1$criteria), 
+      unlist(fitskew1$criteria),
+      unlist(fit2$criteria), 
+      unlist(fitskew2$criteria),
+      unlist(fit3$criteria), 
+      unlist(fitskew3$criteria))) %>% knitr::kable(digits = 1)
+```
+## Healy plot
+\small
+```{r healy1, echo=T,out.width='85%'}
+grid.arrange(healy.plot(fit0),
+            healy.plot(fit1),
+            healy.plot(fit2),
+            healy.plot(fit3))
+```
+
+## LR test for the SCN model
+```{r fit4, echo=T}
+lr.test(fitskew3,fit3)
+```
+
+
+## Computing the ACF
+```{r fit5, echo=T}
+acfresid(fit3)
+```
+## Plotting the ACF
+```{r fit6, echo=T,out.width='85%'}
+plot(acfresid(fit3,calcCI = T,maxLag = 6))
+```
+
+## Fitting an AR(p)-SMN-LMM
+\small
+```{r fitAR, echo=T}
+#sl
+fit2ar1<-smn.lmm(data=sleepstudy,formFixed = Reaction~Days,
+                 formRandom = ~Days,groupVar = "Subject",
+                 distr="sl",depStruct = "ARp",pAR=1,quiet=T)
+fit2ar2<-smn.lmm(data=sleepstudy,formFixed = Reaction~Days,
+                 formRandom = ~Days,groupVar = "Subject",
+                 distr="sl",depStruct = "ARp",pAR=2,quiet=T)
+#cn
+fit3ar1<-smn.lmm(data=sleepstudy,formFixed = Reaction~Days,
+                 formRandom = ~Days,groupVar = "Subject",
+                 distr="cn",depStruct = "ARp",pAR=1,quiet=T)
+fit3ar2<-smn.lmm(data=sleepstudy,formFixed = Reaction~Days,
+                 formRandom = ~Days,groupVar = "Subject",
+                 distr="cn",depStruct = "ARp",pAR=2,quiet=T)
+```
+
+## Fitting a DEC-SMN-LMM
+\small
+```{r fitDEC, echo=T}
+#sl
+fit2dec<-smn.lmm(data=sleepstudy,formFixed = Reaction~Days,
+                 formRandom = ~Days,groupVar = "Subject",
+                 distr="sl",depStruct = "DEC",quiet=T,
+                 timeVar = 'Days')
+#cn
+fit3dec<-smn.lmm(data=sleepstudy,formFixed = Reaction~Days,
+                 formRandom = ~Days,groupVar = "Subject",
+                 distr="cn",depStruct = "DEC",quiet=T,
+                 timeVar = 'Days')
+```
+Since the data are equally spaced and sorted by time, the use of `timeVar` in here is optional (the function will use the position if `timeVar` is not provided).
+
+## Comparing the fitted models
+```{r fitARDEC, echo=F}
+data.frame(distr=rep(c('sl','cn'),each=4),depStruct=rep(c('CI','AR1','AR2','DEC'),2),
+rbind(unlist(fit2$criteria), 
+      unlist(fit2ar1$criteria), 
+      unlist(fit2ar2$criteria),
+      unlist(fit2dec$criteria), 
+      unlist(fit3$criteria), 
+      unlist(fit3ar1$criteria),
+      unlist(fit3ar2$criteria), 
+      unlist(fit3dec$criteria))) %>% knitr::kable(digits = 1)
+```
+## Healy plot
+\small
+```{r healy2, echo=T,out.width='85%'}
+grid.arrange(healy.plot(fit2ar1),
+            healy.plot(fit3ar1),
+            healy.plot(fit3ar2),ncol=2)
+```
+
+## LR test
+\small
+```{r lrtest, echo=T}
+lr.test(fit3ar1,fit3ar2)
+```
+
+## ACF plot for AR(1)-SL-LMM
+```{r acf1, echo=T,out.width='85%'}
+plot(acfresid(fit2ar1,calcCI = T,maxLag = 6))
+```
+
+## ACF plot for AR(1)-CN-LMM
+```{r acf2, echo=T,out.width='85%'}
+plot(acfresid(fit3ar1,calcCI = T,maxLag = 6))
+```
+
+## Fitted models
+\scriptsize
+```{r print1, echo=T}
+#sl
+cbind(fit2ar1$theta,fit2ar1$std.error) %>% 
+  knitr::kable(digits = 2,col.names = c('estimate','std.error'))
+```
+
+***
+\scriptsize
+```{r print2, echo=T}
+#cn
+cbind(fit3ar1$theta,fit3ar1$std.error) %>% 
+  knitr::kable(digits = 2,col.names = c('estimate','std.error'))
+```
+
+
+## Mahalanobis distance
+\scriptsize
+```{r mahal1, echo=T,out.width='80%', fig.height=3}
+grid.arrange(plot(mahalDist(fit2ar1),fitobject = fit2ar1,nlabels = 0)+
+               ggtitle('AR(1)-SL-LMM'),
+             plot(mahalDist(fit3ar1),fitobject = fit3ar1,nlabels = 0)+
+               ggtitle('AR(1)-CN-LMM'),
+             ncol=2)
+```
+
+## Mahalanobis distance versus $\hat{u}$
+\scriptsize
+```{r mahal2, echo=T,out.width='80%', fig.height=3}
+grid.arrange(qplot(mahalDist(fit2ar1),fit2ar1$uhat)+theme_minimal()+
+               ylab("uhat")+xlab("Mahalanobis distance")+
+               ggtitle('AR(1)-SL-LMM'),
+             qplot(mahalDist(fit3ar1),fit3ar1$uhat)+theme_minimal()+
+               ylab("uhat")+xlab("Mahalanobis distance")+
+               ggtitle('AR(1)-CN-LMM'),
+             ncol=2)
+```
+
+
+## Plot fit object
+\scriptsize
+```{r extra1, echo=T, out.width='85%', fig.height=3}
+grid.arrange(plot(fit2ar1,type = "normalized")+ggtitle('AR(1)-SL-LMM'),
+             plot(fit3ar1,type = "normalized")+ggtitle('AR(1)-CN-LMM'),
+             ncol=2)
+```
+
+
+## Prediction
+\scriptsize
+```{r pred1, echo=T}
+tail(sleepstudy,n=3)
+predData <- data.frame(Reaction=NA,Days=10:11,Subject="372")
+predict(fit2ar1,newData = predData)
+predict(fit3ar1,newData = predData)
+```
 
 ## References
 

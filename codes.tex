@@ -121,11 +121,18 @@
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 \usepackage{verbatim}
+\usepackage{multicol}
 
 \title{EncPos}
 \author{Fernanda Lang Schumacher}
@@ -185,7 +192,7 @@
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{fit1 <-}\StringTok{ }\KeywordTok{lme}\NormalTok{(Reaction}\OperatorTok{~}\NormalTok{Days,}\DataTypeTok{data=}\NormalTok{sleepstudy,}
+\NormalTok{fitlme <-}\StringTok{ }\KeywordTok{lme}\NormalTok{(Reaction}\OperatorTok{~}\NormalTok{Days,}\DataTypeTok{data=}\NormalTok{sleepstudy,}
             \DataTypeTok{random=}\OperatorTok{~}\NormalTok{Days}\OperatorTok{|}\NormalTok{Subject)}
 \end{Highlighting}
 \end{Shaded}
@@ -232,11 +239,7 @@
 \begin{frame}[fragile]{The \texttt{R} package \emph{skewlmm}}
 \protect\hypertarget{the-package-1}{}
 
-\begin{itemize}
-\tightlist
-\item
-  The basic syntax of these functions is as follows:
-\end{itemize}
+The basic syntax of these functions is as follows:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -274,8 +277,630 @@ where
   should be used.
 \item
   \texttt{distr}: A character indicating which distribution should be
-  used.
+  used.\pause
 \end{itemize}
+
+Some other useful arguments:
+
+\begin{itemize}
+\item
+  \texttt{timeVar}: A character containing the name of the variable
+  which represents the time in data.
+\item
+  \texttt{initialValues}: A named list containing initial parameter
+  values.
+\item
+  \texttt{pAR}: The order of the autoregressive process that should be
+  used (if depStruct=``ARp'').
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+The functions return an object of the class \texttt{SMSN} and
+\texttt{SMN}, respectively, containing a list of elements, and the
+following methods/functions are available to these classes:
+
+\begin{itemize}
+\item
+  \texttt{print}
+\item
+  \texttt{summary}
+\item
+  \texttt{fitted}
+\item
+  \texttt{plot}
+\item
+  \texttt{predict}
+\item
+  \texttt{residuals}
+\item
+  \texttt{ranef}
+\item
+  \texttt{acfresid}
+\item
+  \texttt{healy.plot}
+\item
+  \texttt{lr.test}
+\item
+  \texttt{mahalDist} 
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Example: sleepstudy}
+\protect\hypertarget{example-sleepstudy}{}
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit0<-}\KeywordTok{smn.lmm}\NormalTok{(}\DataTypeTok{data=}\NormalTok{sleepstudy,}\DataTypeTok{formFixed =}\NormalTok{ Reaction}\OperatorTok{~}\NormalTok{Days,}
+              \DataTypeTok{formRandom =} \OperatorTok{~}\NormalTok{Days,}\DataTypeTok{groupVar =} \StringTok{"Subject"}\NormalTok{,}\DataTypeTok{quiet =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit0}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed models with distribution norm and dependency structure CI 
+## Call:
+## smn.lmm(data = sleepstudy, formFixed = Reaction ~ Days, groupVar = "Subject", 
+##     formRandom = ~Days, quiet = T)
+## 
+## Fixed:Reaction ~ Days
+## Random:~Days
+##   Estimated variance (D):
+##             (Intercept)     Days
+## (Intercept)   560.68002 11.91827
+## Days           11.91827 32.52525
+## 
+## Estimated parameters:
+##      (Intercept)    Days   sigma2  Dsqrt1 Dsqrt2 Dsqrt3
+##         251.4051 10.4673 655.4400 23.6752 0.4059 5.6886
+## s.e.      7.2257  1.5541  31.3784 10.0856 1.7514 1.4270
+## 
+## Model selection criteria:
+##   logLik     AIC      BIC
+##  -875.97 1763.94 1783.098
+## 
+## Number of observations: 180 
+## Number of groups: 18
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fitskew0<-}\KeywordTok{smsn.lmm}\NormalTok{(}\DataTypeTok{data=}\NormalTok{sleepstudy,}\DataTypeTok{formFixed =}\NormalTok{ Reaction}\OperatorTok{~}\NormalTok{Days,}
+              \DataTypeTok{formRandom =} \OperatorTok{~}\NormalTok{Days,}\DataTypeTok{groupVar =} \StringTok{"Subject"}\NormalTok{,}\DataTypeTok{quiet =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fitskew0}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed models with distribution sn and dependency structure CI 
+## Call:
+## smsn.lmm(data = sleepstudy, formFixed = Reaction ~ Days, groupVar = "Subject", 
+##     formRandom = ~Days, quiet = T)
+## 
+## Fixed:Reaction ~ Days
+## Random:~Days
+##   Estimated variance (D):
+##             (Intercept)     Days
+## (Intercept)  1432.65701 35.22718
+## Days           35.22718 33.76855
+## 
+## Estimated parameters:
+##      (Intercept)    Days   sigma2  Dsqrt1 Dsqrt2 Dsqrt3 lambda1 lambda2
+##         251.4073 10.4657 652.6598 37.8418 0.8080 5.7546 -4.2917 -0.2477
+## s.e.     11.6328  2.1610  32.7878 28.9642 5.2063 1.6311      NA      NA
+## 
+## Model selection criteria:
+##    logLik      AIC      BIC
+##  -875.354 1766.709 1792.253
+## 
+## Number of observations: 180 
+## Number of groups: 18
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{Changing the distribution}
+\protect\hypertarget{changing-the-distribution}{}
+
+\scriptsize
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit1<-}\KeywordTok{smn.lmm}\NormalTok{(}\DataTypeTok{data=}\NormalTok{sleepstudy,}\DataTypeTok{formFixed =}\NormalTok{ Reaction}\OperatorTok{~}\NormalTok{Days,}\DataTypeTok{distr =} \StringTok{'t'}\NormalTok{,}
+              \DataTypeTok{formRandom =} \OperatorTok{~}\NormalTok{Days,}\DataTypeTok{groupVar =} \StringTok{"Subject"}\NormalTok{,}\DataTypeTok{quiet =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fitskew1<-}\KeywordTok{smsn.lmm}\NormalTok{(}\DataTypeTok{data=}\NormalTok{sleepstudy,}\DataTypeTok{formFixed =}\NormalTok{ Reaction}\OperatorTok{~}\NormalTok{Days,}\DataTypeTok{distr =} \StringTok{'st'}\NormalTok{,}
+                  \DataTypeTok{formRandom =} \OperatorTok{~}\NormalTok{Days,}\DataTypeTok{groupVar =} \StringTok{"Subject"}\NormalTok{,}\DataTypeTok{quiet =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit2<-}\KeywordTok{smn.lmm}\NormalTok{(}\DataTypeTok{data=}\NormalTok{sleepstudy,}\DataTypeTok{formFixed =}\NormalTok{ Reaction}\OperatorTok{~}\NormalTok{Days,}\DataTypeTok{distr =} \StringTok{'sl'}\NormalTok{,}
+              \DataTypeTok{formRandom =} \OperatorTok{~}\NormalTok{Days,}\DataTypeTok{groupVar =} \StringTok{"Subject"}\NormalTok{,}\DataTypeTok{quiet =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fitskew2<-}\KeywordTok{smsn.lmm}\NormalTok{(}\DataTypeTok{data=}\NormalTok{sleepstudy,}\DataTypeTok{formFixed =}\NormalTok{ Reaction}\OperatorTok{~}\NormalTok{Days,}\DataTypeTok{distr =} \StringTok{'ssl'}\NormalTok{,}
+                  \DataTypeTok{formRandom =} \OperatorTok{~}\NormalTok{Days,}\DataTypeTok{groupVar =} \StringTok{"Subject"}\NormalTok{,}\DataTypeTok{quiet =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit3<-}\KeywordTok{smn.lmm}\NormalTok{(}\DataTypeTok{data=}\NormalTok{sleepstudy,}\DataTypeTok{formFixed =}\NormalTok{ Reaction}\OperatorTok{~}\NormalTok{Days,}\DataTypeTok{distr =} \StringTok{'cn'}\NormalTok{,}
+              \DataTypeTok{formRandom =} \OperatorTok{~}\NormalTok{Days,}\DataTypeTok{groupVar =} \StringTok{"Subject"}\NormalTok{,}\DataTypeTok{quiet =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fitskew3<-}\KeywordTok{smsn.lmm}\NormalTok{(}\DataTypeTok{data=}\NormalTok{sleepstudy,}\DataTypeTok{formFixed =}\NormalTok{ Reaction}\OperatorTok{~}\NormalTok{Days,}\DataTypeTok{distr =} \StringTok{'scn'}\NormalTok{,}
+                  \DataTypeTok{formRandom =} \OperatorTok{~}\NormalTok{Days,}\DataTypeTok{groupVar =} \StringTok{"Subject"}\NormalTok{,}\DataTypeTok{quiet =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\end{frame}
+
+\begin{frame}{Comparing the fitted models}
+\protect\hypertarget{comparing-the-fitted-models}{}
+
+\begin{longtable}[]{@{}lrr@{}}
+\toprule
+distr & AIC & BIC\tabularnewline
+\midrule
+\endhead
+norm & 1763.9 & 1783.1\tabularnewline
+sn & 1766.7 & 1792.3\tabularnewline
+t & 1737.5 & 1759.8\tabularnewline
+st & 1739.8 & 1768.6\tabularnewline
+sl & 1736.2 & 1758.5\tabularnewline
+ssl & 1738.4 & 1767.2\tabularnewline
+cn & 1733.7 & 1759.3\tabularnewline
+scn & 1735.9 & 1767.8\tabularnewline
+\bottomrule
+\end{longtable}
+
+\end{frame}
+
+\begin{frame}[fragile]{Healy plot}
+\protect\hypertarget{healy-plot}{}
+
+\small
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{grid.arrange}\NormalTok{(}\KeywordTok{healy.plot}\NormalTok{(fit0),}
+            \KeywordTok{healy.plot}\NormalTok{(fit1),}
+            \KeywordTok{healy.plot}\NormalTok{(fit2),}
+            \KeywordTok{healy.plot}\NormalTok{(fit3))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{codes_files/figure-beamer/healy1-1} \end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]{LR test for the SCN model}
+\protect\hypertarget{lr-test-for-the-scn-model}{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{lr.test}\NormalTok{(fitskew3,fit3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Model selection criteria:
+##            logLik      AIC      BIC
+## fitskew3 -857.926 1735.851 1767.781
+## fit3     -858.861 1733.722 1759.266
+## 
+##     Likelihood-ratio Test
+## 
+## chi-square statistics =  1.871248 
+## df =  2 
+## p-value =  0.392341 
+## 
+## The null hypothesis that both models represent the 
+## data equally well is not rejected at level  0.05
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{Computing the ACF}
+\protect\hypertarget{computing-the-acf}{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{acfresid}\NormalTok{(fit3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    lag         ACF n.used
+## 1    0  1.00000000    180
+## 2    1  0.19793878    162
+## 3    2 -0.07329748    144
+## 4    3 -0.21972223    126
+## 5    4 -0.06519806    108
+## 6    5 -0.13723727     90
+## 7    6 -0.27485055     72
+## 8    7 -0.08778128     54
+## 9    8  0.19912222     36
+## 10   9  0.58707921     18
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{Plotting the ACF}
+\protect\hypertarget{plotting-the-acf}{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{acfresid}\NormalTok{(fit3,}\DataTypeTok{calcCI =}\NormalTok{ T,}\DataTypeTok{maxLag =} \DecValTok{6}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{codes_files/figure-beamer/fit6-1} \end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]{Fitting an AR(p)-SMN-LMM}
+\protect\hypertarget{fitting-an-arp-smn-lmm}{}
+
+\small
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#sl}
+\NormalTok{fit2ar1<-}\KeywordTok{smn.lmm}\NormalTok{(}\DataTypeTok{data=}\NormalTok{sleepstudy,}\DataTypeTok{formFixed =}\NormalTok{ Reaction}\OperatorTok{~}\NormalTok{Days,}
+                 \DataTypeTok{formRandom =} \OperatorTok{~}\NormalTok{Days,}\DataTypeTok{groupVar =} \StringTok{"Subject"}\NormalTok{,}
+                 \DataTypeTok{distr=}\StringTok{"sl"}\NormalTok{,}\DataTypeTok{depStruct =} \StringTok{"ARp"}\NormalTok{,}\DataTypeTok{pAR=}\DecValTok{1}\NormalTok{,}\DataTypeTok{quiet=}\NormalTok{T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit2ar2<-}\KeywordTok{smn.lmm}\NormalTok{(}\DataTypeTok{data=}\NormalTok{sleepstudy,}\DataTypeTok{formFixed =}\NormalTok{ Reaction}\OperatorTok{~}\NormalTok{Days,}
+                 \DataTypeTok{formRandom =} \OperatorTok{~}\NormalTok{Days,}\DataTypeTok{groupVar =} \StringTok{"Subject"}\NormalTok{,}
+                 \DataTypeTok{distr=}\StringTok{"sl"}\NormalTok{,}\DataTypeTok{depStruct =} \StringTok{"ARp"}\NormalTok{,}\DataTypeTok{pAR=}\DecValTok{2}\NormalTok{,}\DataTypeTok{quiet=}\NormalTok{T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#cn}
+\NormalTok{fit3ar1<-}\KeywordTok{smn.lmm}\NormalTok{(}\DataTypeTok{data=}\NormalTok{sleepstudy,}\DataTypeTok{formFixed =}\NormalTok{ Reaction}\OperatorTok{~}\NormalTok{Days,}
+                 \DataTypeTok{formRandom =} \OperatorTok{~}\NormalTok{Days,}\DataTypeTok{groupVar =} \StringTok{"Subject"}\NormalTok{,}
+                 \DataTypeTok{distr=}\StringTok{"cn"}\NormalTok{,}\DataTypeTok{depStruct =} \StringTok{"ARp"}\NormalTok{,}\DataTypeTok{pAR=}\DecValTok{1}\NormalTok{,}\DataTypeTok{quiet=}\NormalTok{T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit3ar2<-}\KeywordTok{smn.lmm}\NormalTok{(}\DataTypeTok{data=}\NormalTok{sleepstudy,}\DataTypeTok{formFixed =}\NormalTok{ Reaction}\OperatorTok{~}\NormalTok{Days,}
+                 \DataTypeTok{formRandom =} \OperatorTok{~}\NormalTok{Days,}\DataTypeTok{groupVar =} \StringTok{"Subject"}\NormalTok{,}
+                 \DataTypeTok{distr=}\StringTok{"cn"}\NormalTok{,}\DataTypeTok{depStruct =} \StringTok{"ARp"}\NormalTok{,}\DataTypeTok{pAR=}\DecValTok{2}\NormalTok{,}\DataTypeTok{quiet=}\NormalTok{T)}
+\end{Highlighting}
+\end{Shaded}
+
+\end{frame}
+
+\begin{frame}[fragile]{Fitting a DEC-SMN-LMM}
+\protect\hypertarget{fitting-a-dec-smn-lmm}{}
+
+\small
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#sl}
+\NormalTok{fit2dec<-}\KeywordTok{smn.lmm}\NormalTok{(}\DataTypeTok{data=}\NormalTok{sleepstudy,}\DataTypeTok{formFixed =}\NormalTok{ Reaction}\OperatorTok{~}\NormalTok{Days,}
+                 \DataTypeTok{formRandom =} \OperatorTok{~}\NormalTok{Days,}\DataTypeTok{groupVar =} \StringTok{"Subject"}\NormalTok{,}
+                 \DataTypeTok{distr=}\StringTok{"sl"}\NormalTok{,}\DataTypeTok{depStruct =} \StringTok{"DEC"}\NormalTok{,}\DataTypeTok{quiet=}\NormalTok{T,}
+                 \DataTypeTok{timeVar =} \StringTok{'Days'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#cn}
+\NormalTok{fit3dec<-}\KeywordTok{smn.lmm}\NormalTok{(}\DataTypeTok{data=}\NormalTok{sleepstudy,}\DataTypeTok{formFixed =}\NormalTok{ Reaction}\OperatorTok{~}\NormalTok{Days,}
+                 \DataTypeTok{formRandom =} \OperatorTok{~}\NormalTok{Days,}\DataTypeTok{groupVar =} \StringTok{"Subject"}\NormalTok{,}
+                 \DataTypeTok{distr=}\StringTok{"cn"}\NormalTok{,}\DataTypeTok{depStruct =} \StringTok{"DEC"}\NormalTok{,}\DataTypeTok{quiet=}\NormalTok{T,}
+                 \DataTypeTok{timeVar =} \StringTok{'Days'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Since the data are equally spaced and sorted by time, the use of
+\texttt{timeVar} in here is optional (the function will use the position
+if \texttt{timeVar} is not provided).
+
+\end{frame}
+
+\begin{frame}{Comparing the fitted models}
+\protect\hypertarget{comparing-the-fitted-models-1}{}
+
+\begin{longtable}[]{@{}llrr@{}}
+\toprule
+distr & depStruct & AIC & BIC\tabularnewline
+\midrule
+\endhead
+sl & CI & 1736.2 & 1758.5\tabularnewline
+sl & AR1 & 1716.9 & 1742.5\tabularnewline
+sl & AR2 & 1717.3 & 1746.0\tabularnewline
+sl & DEC & 1718.2 & 1746.9\tabularnewline
+cn & CI & 1733.7 & 1759.3\tabularnewline
+cn & AR1 & 1715.5 & 1744.3\tabularnewline
+cn & AR2 & 1714.9 & 1746.9\tabularnewline
+cn & DEC & 1716.3 & 1748.2\tabularnewline
+\bottomrule
+\end{longtable}
+
+\end{frame}
+
+\begin{frame}[fragile]{Healy plot}
+\protect\hypertarget{healy-plot-1}{}
+
+\small
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{grid.arrange}\NormalTok{(}\KeywordTok{healy.plot}\NormalTok{(fit2ar1),}
+            \KeywordTok{healy.plot}\NormalTok{(fit3ar1),}
+            \KeywordTok{healy.plot}\NormalTok{(fit3ar2),}\DataTypeTok{ncol=}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{codes_files/figure-beamer/healy2-1} \end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]{LR test}
+\protect\hypertarget{lr-test}{}
+
+\small
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{lr.test}\NormalTok{(fit3ar1,fit3ar2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Model selection criteria:
+##           logLik      AIC      BIC
+## fit3ar1 -848.760 1715.520 1744.257
+## fit3ar2 -847.463 1714.925 1746.855
+## 
+##     Likelihood-ratio Test
+## 
+## chi-square statistics =  2.594949 
+## df =  1 
+## p-value =  0.1072049 
+## 
+## The null hypothesis that both models represent the 
+## data equally well is not rejected at level  0.05
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{ACF plot for AR(1)-SL-LMM}
+\protect\hypertarget{acf-plot-for-ar1-sl-lmm}{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{acfresid}\NormalTok{(fit2ar1,}\DataTypeTok{calcCI =}\NormalTok{ T,}\DataTypeTok{maxLag =} \DecValTok{6}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{codes_files/figure-beamer/acf1-1} \end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]{ACF plot for AR(1)-CN-LMM}
+\protect\hypertarget{acf-plot-for-ar1-cn-lmm}{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{acfresid}\NormalTok{(fit3ar1,}\DataTypeTok{calcCI =}\NormalTok{ T,}\DataTypeTok{maxLag =} \DecValTok{6}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{codes_files/figure-beamer/acf2-1} \end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]{Fitted models}
+\protect\hypertarget{fitted-models}{}
+
+\scriptsize
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#sl}
+\KeywordTok{cbind}\NormalTok{(fit2ar1}\OperatorTok{$}\NormalTok{theta,fit2ar1}\OperatorTok{$}\NormalTok{std.error) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{digits =} \DecValTok{2}\NormalTok{,}\DataTypeTok{col.names =} \KeywordTok{c}\NormalTok{(}\StringTok{'estimate'}\NormalTok{,}\StringTok{'std.error'}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrr@{}}
+\toprule
+& estimate & std.error\tabularnewline
+\midrule
+\endhead
+(Intercept) & 251.55 & 7.56\tabularnewline
+Days & 9.81 & 1.66\tabularnewline
+sigma2 & 266.24 & 63.43\tabularnewline
+phiAR1 & 0.57 & 0.14\tabularnewline
+Dsqrt1 & 14.21 & 10.15\tabularnewline
+Dsqrt2 & 2.58 & 4.16\tabularnewline
+Dsqrt3 & 2.17 & 6.45\tabularnewline
+nu1 & 1.52 & NA\tabularnewline
+\bottomrule
+\end{longtable}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+\scriptsize
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#cn}
+\KeywordTok{cbind}\NormalTok{(fit3ar1}\OperatorTok{$}\NormalTok{theta,fit3ar1}\OperatorTok{$}\NormalTok{std.error) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{digits =} \DecValTok{2}\NormalTok{,}\DataTypeTok{col.names =} \KeywordTok{c}\NormalTok{(}\StringTok{'estimate'}\NormalTok{,}\StringTok{'std.error'}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrr@{}}
+\toprule
+& estimate & std.error\tabularnewline
+\midrule
+\endhead
+(Intercept) & 252.55 & 7.02\tabularnewline
+Days & 9.99 & 1.57\tabularnewline
+sigma2 & 417.84 & 78.77\tabularnewline
+phiAR1 & 0.56 & 0.14\tabularnewline
+Dsqrt1 & 16.90 & 11.82\tabularnewline
+Dsqrt2 & 2.82 & 4.76\tabularnewline
+Dsqrt3 & 2.89 & 6.31\tabularnewline
+nu1 & 0.12 & NA\tabularnewline
+nu2 & 0.16 & NA\tabularnewline
+\bottomrule
+\end{longtable}
+
+\end{frame}
+
+\begin{frame}[fragile]{Mahalanobis distance}
+\protect\hypertarget{mahalanobis-distance}{}
+
+\scriptsize
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{grid.arrange}\NormalTok{(}\KeywordTok{plot}\NormalTok{(}\KeywordTok{mahalDist}\NormalTok{(fit2ar1),}\DataTypeTok{fitobject =}\NormalTok{ fit2ar1,}\DataTypeTok{nlabels =} \DecValTok{0}\NormalTok{)}\OperatorTok{+}
+\StringTok{               }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{'AR(1)-SL-LMM'}\NormalTok{),}
+             \KeywordTok{plot}\NormalTok{(}\KeywordTok{mahalDist}\NormalTok{(fit3ar1),}\DataTypeTok{fitobject =}\NormalTok{ fit3ar1,}\DataTypeTok{nlabels =} \DecValTok{0}\NormalTok{)}\OperatorTok{+}
+\StringTok{               }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{'AR(1)-CN-LMM'}\NormalTok{),}
+             \DataTypeTok{ncol=}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.8\linewidth]{codes_files/figure-beamer/mahal1-1} \end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]{Mahalanobis distance versus \(\hat{u}\)}
+\protect\hypertarget{mahalanobis-distance-versus-hatu}{}
+
+\scriptsize
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{grid.arrange}\NormalTok{(}\KeywordTok{qplot}\NormalTok{(}\KeywordTok{mahalDist}\NormalTok{(fit2ar1),fit2ar1}\OperatorTok{$}\NormalTok{uhat)}\OperatorTok{+}\KeywordTok{theme_minimal}\NormalTok{()}\OperatorTok{+}
+\StringTok{               }\KeywordTok{ylab}\NormalTok{(}\StringTok{"uhat"}\NormalTok{)}\OperatorTok{+}\KeywordTok{xlab}\NormalTok{(}\StringTok{"Mahalanobis distance"}\NormalTok{)}\OperatorTok{+}
+\StringTok{               }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{'AR(1)-SL-LMM'}\NormalTok{),}
+             \KeywordTok{qplot}\NormalTok{(}\KeywordTok{mahalDist}\NormalTok{(fit3ar1),fit3ar1}\OperatorTok{$}\NormalTok{uhat)}\OperatorTok{+}\KeywordTok{theme_minimal}\NormalTok{()}\OperatorTok{+}
+\StringTok{               }\KeywordTok{ylab}\NormalTok{(}\StringTok{"uhat"}\NormalTok{)}\OperatorTok{+}\KeywordTok{xlab}\NormalTok{(}\StringTok{"Mahalanobis distance"}\NormalTok{)}\OperatorTok{+}
+\StringTok{               }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{'AR(1)-CN-LMM'}\NormalTok{),}
+             \DataTypeTok{ncol=}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.8\linewidth]{codes_files/figure-beamer/mahal2-1} \end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]{Plot fit object}
+\protect\hypertarget{plot-fit-object}{}
+
+\scriptsize
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{grid.arrange}\NormalTok{(}\KeywordTok{plot}\NormalTok{(fit2ar1,}\DataTypeTok{type =} \StringTok{"normalized"}\NormalTok{)}\OperatorTok{+}\KeywordTok{ggtitle}\NormalTok{(}\StringTok{'AR(1)-SL-LMM'}\NormalTok{),}
+             \KeywordTok{plot}\NormalTok{(fit3ar1,}\DataTypeTok{type =} \StringTok{"normalized"}\NormalTok{)}\OperatorTok{+}\KeywordTok{ggtitle}\NormalTok{(}\StringTok{'AR(1)-CN-LMM'}\NormalTok{),}
+             \DataTypeTok{ncol=}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.85\linewidth]{codes_files/figure-beamer/extra1-1} \end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]{Prediction}
+\protect\hypertarget{prediction}{}
+
+\scriptsize
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{tail}\NormalTok{(sleepstudy,}\DataTypeTok{n=}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     Reaction Days Subject
+## 178 343.2199    7     372
+## 179 369.1417    8     372
+## 180 364.1236    9     372
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{predData <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{Reaction=}\OtherTok{NA}\NormalTok{,}\DataTypeTok{Days=}\DecValTok{10}\OperatorTok{:}\DecValTok{11}\NormalTok{,}\DataTypeTok{Subject=}\StringTok{"372"}\NormalTok{)}
+\KeywordTok{predict}\NormalTok{(fit2ar1,}\DataTypeTok{newData =}\NormalTok{ predData)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   groupVar Days    ypred
+## 1      372   10 377.0998
+## 2      372   11 389.5745
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{predict}\NormalTok{(fit3ar1,}\DataTypeTok{newData =}\NormalTok{ predData)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   groupVar Days    ypred
+## 1      372   10 377.1056
+## 2      372   11 389.5576
+\end{verbatim}
 
 \end{frame}
 
