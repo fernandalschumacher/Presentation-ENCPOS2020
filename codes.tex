@@ -75,7 +75,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={EncPos},
+  pdftitle={EnCPos},
   pdfauthor={Fernanda Lang Schumacher},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
@@ -134,7 +134,7 @@
 \usepackage{verbatim}
 \usepackage{multicol}
 
-\title{EncPos}
+\title{EnCPos}
 \author{Fernanda Lang Schumacher}
 \date{23/11/2020}
 
@@ -741,67 +741,6 @@ cn & DEC & 1716.3 & 1748.2\tabularnewline
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#sl}
-\KeywordTok{cbind}\NormalTok{(fit2ar1}\OperatorTok{$}\NormalTok{theta,fit2ar1}\OperatorTok{$}\NormalTok{std.error) }\OperatorTok{%>%}\StringTok{ }
-\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{digits =} \DecValTok{2}\NormalTok{,}\DataTypeTok{col.names =} \KeywordTok{c}\NormalTok{(}\StringTok{'estimate'}\NormalTok{,}\StringTok{'std.error'}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{longtable}[]{@{}lrr@{}}
-\toprule
-& estimate & std.error\tabularnewline
-\midrule
-\endhead
-(Intercept) & 251.55 & 7.56\tabularnewline
-Days & 9.81 & 1.66\tabularnewline
-sigma2 & 266.24 & 63.43\tabularnewline
-phiAR1 & 0.57 & 0.14\tabularnewline
-Dsqrt1 & 14.21 & 10.15\tabularnewline
-Dsqrt2 & 2.58 & 4.16\tabularnewline
-Dsqrt3 & 2.17 & 6.45\tabularnewline
-nu1 & 1.52 & NA\tabularnewline
-\bottomrule
-\end{longtable}
-
-\end{frame}
-
-\begin{frame}[fragile]
-
-\scriptsize
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{#cn}
-\KeywordTok{cbind}\NormalTok{(fit3ar1}\OperatorTok{$}\NormalTok{theta,fit3ar1}\OperatorTok{$}\NormalTok{std.error) }\OperatorTok{%>%}\StringTok{ }
-\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{digits =} \DecValTok{2}\NormalTok{,}\DataTypeTok{col.names =} \KeywordTok{c}\NormalTok{(}\StringTok{'estimate'}\NormalTok{,}\StringTok{'std.error'}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{longtable}[]{@{}lrr@{}}
-\toprule
-& estimate & std.error\tabularnewline
-\midrule
-\endhead
-(Intercept) & 252.55 & 7.02\tabularnewline
-Days & 9.99 & 1.57\tabularnewline
-sigma2 & 417.84 & 78.77\tabularnewline
-phiAR1 & 0.56 & 0.14\tabularnewline
-Dsqrt1 & 16.90 & 11.82\tabularnewline
-Dsqrt2 & 2.82 & 4.76\tabularnewline
-Dsqrt3 & 2.89 & 6.31\tabularnewline
-nu1 & 0.12 & NA\tabularnewline
-nu2 & 0.16 & NA\tabularnewline
-\bottomrule
-\end{longtable}
-
-\end{frame}
-
-\begin{frame}[fragile]
-
-\scriptsize
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{cbind}\NormalTok{(}\KeywordTok{c}\NormalTok{(fit2ar1}\OperatorTok{$}\NormalTok{theta,}\OtherTok{NA}\NormalTok{),}\KeywordTok{c}\NormalTok{(fit2ar1}\OperatorTok{$}\NormalTok{std.error,}\OtherTok{NA}\NormalTok{),}
 \NormalTok{      fit3ar1}\OperatorTok{$}\NormalTok{theta,fit3ar1}\OperatorTok{$}\NormalTok{std.error) }\OperatorTok{%>%}\StringTok{ }
 \StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{digits =} \DecValTok{2}\NormalTok{,}\DataTypeTok{col.names =} 
@@ -935,13 +874,16 @@ AR(1)-SMN-LMM}
 \protect\hypertarget{references}{}
 
 \begin{itemize}
-\tightlist
 \item
   Gregory Belenky, Nancy J. Wesensten, David R. Thorne, Maria L. Thomas,
-  Helen C. Sing, Daniel P. Redmond, Michael B. Russo and Thomas J.
-  Balkin (2003) Patterns of performance degradation and restoration
-  during sleep restriction and subsequent recovery: a sleep
-  dose-response study. Journal of Sleep Research 12, 1--12.
+  Helen C. Sing, Daniel P. Redmond, Michael B. Russo \& Thomas J. Balkin
+  (2003) Patterns of performance degradation and restoration during
+  sleep restriction and subsequent recovery: a sleep dose-response
+  study. Journal of Sleep Research 12, 1--12.
+\item
+  Schumacher, F. L., Matos, L. A., \& Lachos, V. H. (2020). Scale
+  mixture of skew-normal linear mixed models with within-subject serial
+  dependence. arXiv preprint arXiv:2002.01040.
 \end{itemize}
 
 \end{frame}
