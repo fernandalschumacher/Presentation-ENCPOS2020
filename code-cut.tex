@@ -709,6 +709,68 @@ cn & DEC & 1716.3 & 1748.2\tabularnewline
 
 \end{frame}
 
+% \begin{frame}[fragile]{Fitted models}
+% \protect\hypertarget{fitted-models}{}
+
+% \scriptsize
+
+% \begin{Shaded}
+% \begin{Highlighting}[]
+% \CommentTok{#sl}
+% \KeywordTok{cbind}\NormalTok{(fit2ar1}\OperatorTok{$}\NormalTok{theta,fit2ar1}\OperatorTok{$}\NormalTok{std.error) }\OperatorTok{%>%}\StringTok{ }
+% \StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{digits =} \DecValTok{2}\NormalTok{,}\DataTypeTok{col.names =} \KeywordTok{c}\NormalTok{(}\StringTok{'estimate'}\NormalTok{,}\StringTok{'std.error'}\NormalTok{))}
+% \end{Highlighting}
+% \end{Shaded}
+
+% \begin{longtable}[]{@{}lrr@{}}
+% \toprule
+% & estimate & std.error\tabularnewline
+% \midrule
+% \endhead
+% (Intercept) & 251.55 & 7.56\tabularnewline
+% Days & 9.81 & 1.66\tabularnewline
+% sigma2 & 266.24 & 63.43\tabularnewline
+% phiAR1 & 0.57 & 0.14\tabularnewline
+% Dsqrt1 & 14.21 & 10.15\tabularnewline
+% Dsqrt2 & 2.58 & 4.16\tabularnewline
+% Dsqrt3 & 2.17 & 6.45\tabularnewline
+% nu1 & 1.52 & NA\tabularnewline
+% \bottomrule
+% \end{longtable}
+
+% \end{frame}
+
+% \begin{frame}[fragile]
+
+% \scriptsize
+
+% \begin{Shaded}
+% \begin{Highlighting}[]
+% \CommentTok{#cn}
+% \KeywordTok{cbind}\NormalTok{(fit3ar1}\OperatorTok{$}\NormalTok{theta,fit3ar1}\OperatorTok{$}\NormalTok{std.error) }\OperatorTok{%>%}\StringTok{ }
+% \StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{digits =} \DecValTok{2}\NormalTok{,}\DataTypeTok{col.names =} \KeywordTok{c}\NormalTok{(}\StringTok{'estimate'}\NormalTok{,}\StringTok{'std.error'}\NormalTok{))}
+% \end{Highlighting}
+% \end{Shaded}
+
+% \begin{longtable}[]{@{}lrr@{}}
+% \toprule
+% & estimate & std.error\tabularnewline
+% \midrule
+% \endhead
+% (Intercept) & 252.55 & 7.02\tabularnewline
+% Days & 9.99 & 1.57\tabularnewline
+% sigma2 & 417.84 & 78.77\tabularnewline
+% phiAR1 & 0.56 & 0.14\tabularnewline
+% Dsqrt1 & 16.90 & 11.82\tabularnewline
+% Dsqrt2 & 2.82 & 4.76\tabularnewline
+% Dsqrt3 & 2.89 & 6.31\tabularnewline
+% nu1 & 0.12 & NA\tabularnewline
+% nu2 & 0.16 & NA\tabularnewline
+% \bottomrule
+% \end{longtable}
+
+% \end{frame}
+
 \begin{frame}[fragile]{Fitted models}
 \protect\hypertarget{fitted-models}{}
 
@@ -716,60 +778,31 @@ cn & DEC & 1716.3 & 1748.2\tabularnewline
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#sl}
-\KeywordTok{cbind}\NormalTok{(fit2ar1}\OperatorTok{$}\NormalTok{theta,fit2ar1}\OperatorTok{$}\NormalTok{std.error) }\OperatorTok{%>%}\StringTok{ }
-\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{digits =} \DecValTok{2}\NormalTok{,}\DataTypeTok{col.names =} \KeywordTok{c}\NormalTok{(}\StringTok{'estimate'}\NormalTok{,}\StringTok{'std.error'}\NormalTok{))}
+\KeywordTok{cbind}\NormalTok{(}\KeywordTok{c}\NormalTok{(fit2ar1}\OperatorTok{$}\NormalTok{theta,}\OtherTok{NA}\NormalTok{),}\KeywordTok{c}\NormalTok{(fit2ar1}\OperatorTok{$}\NormalTok{std.error,}\OtherTok{NA}\NormalTok{),}
+\NormalTok{      fit3ar1}\OperatorTok{$}\NormalTok{theta,fit3ar1}\OperatorTok{$}\NormalTok{std.error) }
 \end{Highlighting}
 \end{Shaded}
 
-\begin{longtable}[]{@{}lrr@{}}
+\begin{longtable}[]{@{}lrrrr@{}}
 \toprule
-& estimate & std.error\tabularnewline
+& \multicolumn{2}{c}{{SL}} &\multicolumn{2}{c}{{CN}}\tabularnewline
+& estimate & std.error & estimate & std.error\tabularnewline
 \midrule
 \endhead
-(Intercept) & 251.55 & 7.56\tabularnewline
-Days & 9.81 & 1.66\tabularnewline
-sigma2 & 266.24 & 63.43\tabularnewline
-phiAR1 & 0.57 & 0.14\tabularnewline
-Dsqrt1 & 14.21 & 10.15\tabularnewline
-Dsqrt2 & 2.58 & 4.16\tabularnewline
-Dsqrt3 & 2.17 & 6.45\tabularnewline
-nu1 & 1.52 & NA\tabularnewline
+(Intercept) & 251.55 & 7.56 & 252.55 & 7.02\tabularnewline
+Days & 9.81 & 1.66 & 9.99 & 1.57\tabularnewline
+sigma2 & 266.24 & 63.43 & 417.84 & 78.77\tabularnewline
+phiAR1 & 0.57 & 0.14 & 0.56 & 0.14\tabularnewline
+Dsqrt1 & 14.21 & 10.15 & 16.90 & 11.82\tabularnewline
+Dsqrt2 & 2.58 & 4.16 & 2.82 & 4.76\tabularnewline
+Dsqrt3 & 2.17 & 6.45 & 2.89 & 6.31\tabularnewline
+nu1 & 1.52 & NA & 0.12 & NA\tabularnewline
+nu2& NA & NA & 0.16 & NA\tabularnewline
 \bottomrule
 \end{longtable}
 
 \end{frame}
 
-\begin{frame}[fragile]
-
-\scriptsize
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{#cn}
-\KeywordTok{cbind}\NormalTok{(fit3ar1}\OperatorTok{$}\NormalTok{theta,fit3ar1}\OperatorTok{$}\NormalTok{std.error) }\OperatorTok{%>%}\StringTok{ }
-\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{digits =} \DecValTok{2}\NormalTok{,}\DataTypeTok{col.names =} \KeywordTok{c}\NormalTok{(}\StringTok{'estimate'}\NormalTok{,}\StringTok{'std.error'}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{longtable}[]{@{}lrr@{}}
-\toprule
-& estimate & std.error\tabularnewline
-\midrule
-\endhead
-(Intercept) & 252.55 & 7.02\tabularnewline
-Days & 9.99 & 1.57\tabularnewline
-sigma2 & 417.84 & 78.77\tabularnewline
-phiAR1 & 0.56 & 0.14\tabularnewline
-Dsqrt1 & 16.90 & 11.82\tabularnewline
-Dsqrt2 & 2.82 & 4.76\tabularnewline
-Dsqrt3 & 2.89 & 6.31\tabularnewline
-nu1 & 0.12 & NA\tabularnewline
-nu2 & 0.16 & NA\tabularnewline
-\bottomrule
-\end{longtable}
-
-\end{frame}
 
 \begin{frame}[fragile]{Mahalanobis distance for AR(1)-SMN-LMM}
 \protect\hypertarget{mahalanobis-distance-for-ar1-smn-lmm}{}
@@ -781,8 +814,7 @@ nu2 & 0.16 & NA\tabularnewline
 \KeywordTok{grid.arrange}\NormalTok{(}\KeywordTok{plot}\NormalTok{(}\KeywordTok{mahalDist}\NormalTok{(fit2ar1),}\DataTypeTok{fitobject =}\NormalTok{ fit2ar1,}\DataTypeTok{nlabels =} \DecValTok{0}\NormalTok{)}\OperatorTok{+}
 \StringTok{               }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{'AR(1)-SL-LMM'}\NormalTok{),}
              \KeywordTok{plot}\NormalTok{(}\KeywordTok{mahalDist}\NormalTok{(fit3ar1),}\DataTypeTok{fitobject =}\NormalTok{ fit3ar1,}\DataTypeTok{nlabels =} \DecValTok{0}\NormalTok{)}\OperatorTok{+}
-\StringTok{               }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{'AR(1)-CN-LMM'}\NormalTok{),}
-             \DataTypeTok{ncol=}\DecValTok{2}\NormalTok{)}
+\StringTok{               }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{'AR(1)-CN-LMM'}\NormalTok{),} \DataTypeTok{ncol=}\DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -803,8 +835,7 @@ AR(1)-SMN-LMM}
 \StringTok{               }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{'AR(1)-SL-LMM'}\NormalTok{),}
              \KeywordTok{qplot}\NormalTok{(}\KeywordTok{mahalDist}\NormalTok{(fit3ar1),fit3ar1}\OperatorTok{$}\NormalTok{uhat)}\OperatorTok{+}\KeywordTok{theme_minimal}\NormalTok{()}\OperatorTok{+}
 \StringTok{               }\KeywordTok{ylab}\NormalTok{(}\StringTok{"uhat"}\NormalTok{)}\OperatorTok{+}\KeywordTok{xlab}\NormalTok{(}\StringTok{"Mahalanobis distance"}\NormalTok{)}\OperatorTok{+}
-\StringTok{               }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{'AR(1)-CN-LMM'}\NormalTok{),}
-             \DataTypeTok{ncol=}\DecValTok{2}\NormalTok{)}
+\StringTok{               }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{'AR(1)-CN-LMM'}\NormalTok{),} \DataTypeTok{ncol=}\DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -812,7 +843,7 @@ AR(1)-SMN-LMM}
 
 \end{frame}
 
-\begin{frame}[fragile]{Plot fitted models}
+\begin{frame}[fragile]{Plotting fitted models}
 \protect\hypertarget{plot-fitted-models}{}
 
 \scriptsize
@@ -874,17 +905,88 @@ AR(1)-SMN-LMM}
 
 \end{frame}
 
-\begin{frame}{References}
+\section{Concluding remarks}
+\begin{frame}{Concluding remarks}
+    Some additional features are currently under development:
+    \begin{itemize}
+        \item Estimation of some important special cases, such as when $\bD$ is diagonal or in blocks; 
+        \item Use of parallel optimization to improve performance;
+        \item Use of a method for acceleration of the convergence rate of the EM-type algorithm used in the estimation procedure. 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Main references}
 \protect\hypertarget{references}{}
+\vspace{-.2cm}
+\tiny{
+\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
+\bibitem{azzalini} Azzalini, A. \& A. D. Valle (1996).
+\newblock The multivariate skew-normal distribution.
+\newblock Biometrika 83(4), 715–726.
 
-\begin{itemize}
-\tightlist
-\item
-  Gregory Belenky, Nancy J. Wesensten, David R. Thorne, Maria L. Thomas,
-  Helen C. Sing, Daniel P. Redmond, Michael B. Russo and Thomas J.
-  Balkin (2003) Patterns of performance degradation and restoration
-  during sleep restriction and subsequent recovery: a sleep
-  dose-response study. Journal of Sleep Research 12, 1--12.
-\end{itemize}
+\bibitem{belenky} Belenky, G., Wesensten, N. J., Thorne, D. R., Thomas, M, L., Sing, H. C., Redmond, D. P., Russo, M. B. \& Balkin, T. J. (2003).
+\newblock Patterns of performance degradation and restoration during sleep restriction and subsequent recovery: a sleep
+  dose-response study. 
+\newblock Journal of Sleep Research 12, 1--12.
 
+\bibitem{box} Box, G. E., G. M. Jenkins, G. C. Reinsel \& G. M. Ljung (2015).
+\newblock Time series analysis: forecasting and control.
+\newblock John Wiley \& Sons.
+
+\bibitem{dempster} Dempster, A., Laird, N. \& Rubin, D. (1977).
+\newblock Maximum likelihood from incomplete data via the EM algorithm.
+\newblock Journal of the Royal Statistical Society, Series B 39, 1–38.
+
+\bibitem{lachos} Lachos, V. H., P. Ghosh \& R. B. Arellano-Valle (2010).
+\newblock Likelihood based inference for skew–normal independent linear mixed models.
+\newblock Statistica Sinica 20, 303–322.
+
+\bibitem{munoz} Muñoz, A., V. Carey, J. P. Schouten, M. Segal \& B. Rosner (1992).
+\newblock A parametric family of correlation structures for the analysis of longitudinal data.
+\newblock Biometrics 48, 733–742.
+
+\bibitem{schumacher} Schumacher, F. L., Matos, L. A., \& Lachos, V. H. (2020).
+\newblock Scale mixture of skew-normal linear mixed models with within-subject serial dependence. 
+\newblock arXiv preprint arXiv:2002.01040.
+
+\end{thebibliography}
+}
+\end{frame}
+
+\section{}
+%\nologo
+\begin{frame}
+%\vspace{-.5cm}
+\begin{columns}
+\column{.35\textwidth}
+\center{\Large Full paper} \\
+\href{https://arxiv.org/abs/2002.01040}{\includegraphics[ height=2.2cm, keepaspectratio=true]{qrcode.eps}}
+\column{.65\textwidth}
+\vspace{-.4cm}\center{\Large Acknowledgments} 
+\\\includegraphics[ height=1.7cm, keepaspectratio=true]{imecc} \hspace{.5cm}
+\includegraphics[ height=1.7cm, keepaspectratio=true]{logo-capes}
+\end{columns}
+
+\vfill
+
+\fboxsep=0pt
+\noindent%
+\begin{minipage}[t]{0.38\linewidth}
+\begin{flushright} 
+\vspace{.01cm}
+\includegraphics[ height=1cm, keepaspectratio=true]{contact}
+\end{flushright}
+\end{minipage}%
+\hfill%
+\begin{minipage}[t]{0.6\linewidth}
+\begin{flushright} 
+\color{paynesgrey}
+Fernanda Lang Schumacher\\
+PhD student, IMECC -- UNICAMP\\
+\color{black}
+\nolinkurl{fernandalschumacher@gmail.com}
+%\url{https://www.linkedin.com/in/fernanda-lang-schumacher-18123775}
+\end{flushright}
+\end{minipage}
+%\center{\huge Thank you!}
 \end{frame}
