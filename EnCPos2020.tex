@@ -1,5 +1,10 @@
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
 %\documentclass[9pt]{beamer} 
-\documentclass{beamer} 	%del imecc
+%\documentclass{beamer} 	%del imecc
+\documentclass{beamer}
+\usepackage{pgfpages}
+\raggedbottom
 \usepackage{beamerthemeshadow}
 \usepackage{amsmath, amssymb, amsfonts, textcomp}
 %=========================================================================================
@@ -20,7 +25,67 @@
 \usepackage{pgf, tikz}
 \usetikzlibrary{arrows}
 \usepackage{ stmaryrd }
+%%
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
 
+\widowpenalties 1 10000
+\raggedbottom
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+\usepackage{caption}
+\usepackage{multicol}
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~
 \usepackage{bbm}
 \usepackage{eufrak}
@@ -45,23 +110,111 @@
 \newcommand{\vazio}{\emptyset}
 \newcommand{\set}[1]{\left\{#1\right\}}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{bm}
+\newcommand{\lp}{\left(}% abrir par\^{e}nteses
+\newcommand{\rp}{\right)}% fechar par\^{e}nteses
+\newcommand{\qc}{\stackrel {{\rm q.c}}{\longrightarrow}}
+\newcommand{\iid}{\stackrel {{\rm iid}}{\sim}}
+\newcommand{\ind}{\stackrel {{\rm ind}}{\sim}}
+\newcommand{\dd}{\stackrel {{\rm d}}{\longrightarrow}}
+\newcommand{\sumi}{\sum^n_{i=1}}
+\newcommand{\sumj}{\sum^g_{j=1}}
+\newcommand{\sumas}{\sum^n_{i=1}}
+\newcommand{\ii}{i=1,\ldots,n}
+\newcommand{\ts}{t=1,\ldots,T}
+\newcommand{\jj}{j=1,\ldots,n}
+\newcommand{\by}{{\bf y}}
+\newcommand{\yp}{\mathbf{y}}
+\newcommand{\Y}{\mathbf{Y}}
+%\newcommand{\vari}{\phi_b\textbf{u}_j\textbf{u}'_j+\mathbb{I}_{n_j}\phi_e}
+\newcommand{\D}{\textrm{D}^{-1}(\bphi)}
+\newcommand{\z}{\mathbf{Z}}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\zp}{\mathbf{z}}
+\newcommand{\bA}{\mathbf{A}}
+\newcommand{\A}{\textrm{A}}
+\newcommand{\ap}{\mathbf{a}}
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\R}{\mathbf{R}}
+%\newcommand{\C}{\mathbf{C}}
+\newcommand{\E}{\textrm{E}}
+\newcommand{\up}{\mathbf{u}}
+%\newcommand{\U}{\mathbf{U}}
+\newcommand{\s}{\mathbf{s}}
+\newcommand{\B}{\mathbf{B}}
+\newcommand{\ST}{\textrm{ST}}
+\newcommand{\SSL}{\textrm{SSL}}
+\newcommand{\SCN}{\textrm{SCN}}
+\newcommand{\SN}{\textrm{SN}}
+\newcommand{\SNI}{\textrm{SNI}}
+\newcommand{\NI}{\textrm{NI}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\bF}{\mathbf{F}}
+\newcommand{\bQ}{\mathbf{Q}}
+\newcommand{\bC}{\mathbf{C}}
+\newcommand{\bD}{\mathbf{D}}
+\newcommand{\bc}{\mathbf{c}}
+\newcommand{\bV}{\mathbf{V}}
+\newcommand{\bv}{\mathbf{v}}
+\newcommand{\bu}{\mathbf{u}}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\xp}{\mathbf{x}}
+\newcommand{\ba}{\mathbf{b}}
+%-----------------------------------------------------------------
+\newcommand{\balpha}{\mbox{${ \bm \alpha}$}}
+\newcommand{\bmu}{\mbox{${ \bm \mu}$}}
+\newcommand{\bphi}{\mbox{${ \bm \phi}$}}
+\newcommand{\bPhi}{\mbox{${ \bm \Phi}$}}
+\newcommand{\bnu}{\mbox{${ \bm \nu}$}}
+\newcommand{\bSigma}{\mbox{${ \bm \Sigma}$}}
+\newcommand{\bepsilon}{\mbox{${ \bm \epsilon}$}}
+\newcommand{\bLambda}{\mbox{${ \bm \Lambda}$}}
+\newcommand{\bbeta}{\mbox{${\bm \beta}$}}
+\newcommand{\btheta}{\mbox{${ \bm \theta}$}}
+\newcommand{\bTheta}{\mbox{${ \bm \Theta}$}}
+\newcommand{\bxi}{\mbox{${ \bm \xi}$}}
+\newcommand{\bvarphi}{\mbox{${ \bm \varphi}$}}
+\newcommand{\bnabla}{\mbox{${ \bm \nabla}$}}
+\newcommand{\bDelta}{\mbox{${ \bm \Delta}$}}
+\newcommand{\bdelta}{\mbox{${ \bm \delta}$}}
+\newcommand{\bPsi}{\mbox{${ \bm \Psi}$}}
+\newcommand{\bpsi}{\mbox{${ \bm \psi}$}}
+\newcommand{\btau}{\mbox{${ \bm \tau}$}}
+\newcommand{\be}{\mathbf{b}}
+\newcommand{\bpi}{\mbox{${ \bm \pi}$}}
+\newcommand{\blambda}{\mbox{${ \bm \lambda}$}}
+\newcommand{\bOmega}{\mbox{${ \bm \Omega}$}}
+\newcommand{\bomega}{\mbox{${ \bm \omega}$}}
+\newcommand{\bUpsilon}{\mbox{${ \bm \Upsilon}$}}
+\newcommand{\bgamma}{\mbox{${ \bm \gamma}$}}
+\newcommand{\bGamma}{\mbox{${ \bm \Gamma}$}}
+\newcommand{\neta}{\mbox{${ \bm \eta}$}}
+\newcommand{\bvar}{\mbox{${ \bm \varepsilon}$}}
+\newcommand{\bS}{\mathbf{S}}
+%
+\newcommand{\bi}{\textbf{b}_i}
+\newcommand{\bzeta}{\mbox{\boldmath $\zeta$}}
+%
+\newcommand{\sepvfill}{\setlength{\itemsep}{\fill}}
+
 \begin{document}
 %%TÍTULO-------------------------------------------
-\author{Autor(es)}
-\title{Título}
-\institute{Universidade}
+\author{Fernanda Lang Schumacher \\ \vspace{.2cm}\small joint work with Larissa A. Matos and Victor H. Lachos}
+\title{Robust estimation in linear mixed models using the R package \it{skewlmm}}
+\institute{Universidade Estadual de Campinas}
 \titlegraphic{\includegraphics[width=1cm]{Figuras/imecc.png}~\includegraphics[width=1cm]{Figuras/logounicamp.png}}
 \date{\today}
 
 \frame{\maketitle}
 
-\AtBeginSection[]
-{  \begin{frame}<beamer>{Conteúdo}
-    \tableofcontents[currentsection]
-  \end{frame}}
+% \AtBeginSection[]
+% {  \begin{frame}<beamer>{Conteúdo}
+%     \tableofcontents[currentsection]
+%   \end{frame}}
 %% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 % Conteudo do trabalho
-\input{conteudo}
+\input{code-cut}
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 %\frame{ \frametitle{Principais Refer\^encias }
