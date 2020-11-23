@@ -67,11 +67,11 @@ ggplot(data = nlme::ranef(fitlme),aes(sample=`Days`)) +  geom_qq() +geom_qq_line
 
 ## The \texttt{R} package \emph{skewlmm}
 
-- The package \emph{skewlmm} implemets an EM-type algorithm in \texttt{R} using S3 class, containing methods for estimating and predicting the SMSN-LMM.
+- The package \emph{skewlmm} implemets an EM-type algorithm in \texttt{R} using S3 class, containing methods for estimating and predicting the SM(S)N-LMM.
 
 - It has an user-friendly interface with generic \texttt{R} functions `print`, `summary`, `plot`, `fitted`, `residuals` and `predict` implemented. 
 
-- The main functions in the package are the `smsn.lmm()` and `smn.lmm()` functions, which estimates the parameter of a SMSN-LMM and a SMN-LMM, respectively.
+- The main functions in the package are `smsn.lmm()` and `smn.lmm()`, which fit a SMSN-LMM and a SMN-LMM, respectively.
 
 ## The \texttt{R} package \emph{skewlmm}
 
@@ -101,9 +101,9 @@ Some other useful arguments:
 
 - `timeVar`: A character containing the name of the variable which represents the time in data.
 
-- `initialValues`: A named list containing initial parameter values.
-
 - `pAR`: The order of the autoregressive process that should be used (if depStruct="ARp").
+
+- `initialValues`: A named list containing initial parameter values.
 
 ***
 
@@ -133,10 +133,11 @@ The functions return an object of the class `SMSN` and `SMN`, respectively, cont
 - `mahalDist`
 <!-- \end{multicols} -->
 
-## Example: sleepstudy
+## Example: sleepstudy data
 
 \tiny
 ```{r fit0, echo=T}
+#fitting a (CI)-SMN-LMM, default is distr='norm'
 fit0<-smn.lmm(data=sleepstudy,formFixed = Reaction~Days,
               formRandom = ~Days,groupVar = "Subject",quiet = T)
 fit0
@@ -144,6 +145,7 @@ fit0
 ***
 \tiny
 ```{r fitskew0, echo=T}
+#fitting a (CI)-SMSN-LMM, default is distr='sn'
 fitskew0<-smsn.lmm(data=sleepstudy,formFixed = Reaction~Days,
               formRandom = ~Days,groupVar = "Subject",quiet = T)
 fitskew0
@@ -178,7 +180,7 @@ rbind(unlist(fit0$criteria),
       unlist(fit3$criteria), 
       unlist(fitskew3$criteria))) %>% knitr::kable(digits = 1)
 ```
-## Healy plot
+## Assessing the goodness of fit using a Healy-type plot
 \small
 ```{r healy1, echo=T,out.width='85%'}
 grid.arrange(healy.plot(fit0),
@@ -187,17 +189,17 @@ grid.arrange(healy.plot(fit0),
             healy.plot(fit3))
 ```
 
-## LR test for the SCN model
+## LR test for $H_0: \lambda=0$ in the CN-LMM
 ```{r fit4, echo=T}
 lr.test(fitskew3,fit3)
 ```
 
 
-## Computing the ACF
+## Computing the ACF of the residuals from CN-LMM
 ```{r fit5, echo=T}
 acfresid(fit3)
 ```
-## Plotting the ACF
+## Plotting the ACF (CI-CN-LMM)
 ```{r fit6, echo=T,out.width='85%'}
 plot(acfresid(fit3,calcCI = T,maxLag = 6))
 ```
@@ -249,7 +251,7 @@ rbind(unlist(fit2$criteria),
       unlist(fit3ar2$criteria), 
       unlist(fit3dec$criteria))) %>% knitr::kable(digits = 1)
 ```
-## Healy plot
+## Healy plot for the AR($p$)-SMN-LMM
 \small
 ```{r healy2, echo=T,out.width='85%'}
 grid.arrange(healy.plot(fit2ar1),
@@ -257,20 +259,19 @@ grid.arrange(healy.plot(fit2ar1),
             healy.plot(fit3ar2),ncol=2)
 ```
 
-## LR test
+## LR test for $H_0: \phi_2=0$ in the CN-LMM
 \small
 ```{r lrtest, echo=T}
 lr.test(fit3ar1,fit3ar2)
 ```
 
-## ACF plot for AR(1)-SL-LMM
-```{r acf1, echo=T,out.width='85%'}
-plot(acfresid(fit2ar1,calcCI = T,maxLag = 6))
-```
-
-## ACF plot for AR(1)-CN-LMM
-```{r acf2, echo=T,out.width='85%'}
-plot(acfresid(fit3ar1,calcCI = T,maxLag = 6))
+## ACF plot for AR(1)-SMN-LMM
+\scriptsize
+```{r acf1, echo=T,out.width='85%',fig.width=7}
+grid.arrange(plot(acfresid(fit2ar1,calcCI = T,maxLag = 6))+
+               ggtitle("AR(1)-SL-LMM"),
+             plot(acfresid(fit3ar1,calcCI = T,maxLag = 6))+
+               ggtitle("AR(1)-CN-LMM"), ncol=2)
 ```
 
 ## Fitted models
@@ -290,7 +291,7 @@ cbind(fit3ar1$theta,fit3ar1$std.error) %>%
 ```
 
 
-## Mahalanobis distance
+## Mahalanobis distance for AR(1)-SMN-LMM
 \scriptsize
 ```{r mahal1, echo=T,out.width='80%', fig.height=3}
 grid.arrange(plot(mahalDist(fit2ar1),fitobject = fit2ar1,nlabels = 0)+
@@ -300,7 +301,7 @@ grid.arrange(plot(mahalDist(fit2ar1),fitobject = fit2ar1,nlabels = 0)+
              ncol=2)
 ```
 
-## Mahalanobis distance versus $\hat{u}$
+## Mahalanobis distance versus $\hat{u}$ for AR(1)-SMN-LMM
 \scriptsize
 ```{r mahal2, echo=T,out.width='80%', fig.height=3}
 grid.arrange(qplot(mahalDist(fit2ar1),fit2ar1$uhat)+theme_minimal()+
@@ -313,7 +314,7 @@ grid.arrange(qplot(mahalDist(fit2ar1),fit2ar1$uhat)+theme_minimal()+
 ```
 
 
-## Plot fit object
+## Plot fitted models
 \scriptsize
 ```{r extra1, echo=T, out.width='85%', fig.height=3}
 grid.arrange(plot(fit2ar1,type = "normalized")+ggtitle('AR(1)-SL-LMM'),
@@ -322,7 +323,7 @@ grid.arrange(plot(fit2ar1,type = "normalized")+ggtitle('AR(1)-SL-LMM'),
 ```
 
 
-## Prediction
+## Prediction of future measurements
 \scriptsize
 ```{r pred1, echo=T}
 tail(sleepstudy,n=3)

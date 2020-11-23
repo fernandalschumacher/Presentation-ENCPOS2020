@@ -223,15 +223,14 @@
 \item
   The package \emph{skewlmm} implemets an EM-type algorithm in
   \texttt{R} using S3 class, containing methods for estimating and
-  predicting the SMSN-LMM.
+  predicting the SM(S)N-LMM.
 \item
   It has an user-friendly interface with generic \texttt{R} functions
   \texttt{print}, \texttt{summary}, \texttt{plot}, \texttt{fitted},
   \texttt{residuals} and \texttt{predict} implemented.
 \item
-  The main functions in the package are the \texttt{smsn.lmm()} and
-  \texttt{smn.lmm()} functions, which estimates the parameter of a
-  SMSN-LMM and a SMN-LMM, respectively.
+  The main functions in the package are \texttt{smsn.lmm()} and
+  \texttt{smn.lmm()}, which fit a SMSN-LMM and a SMN-LMM, respectively.
 \end{itemize}
 
 \end{frame}
@@ -287,11 +286,11 @@ Some other useful arguments:
   \texttt{timeVar}: A character containing the name of the variable
   which represents the time in data.
 \item
-  \texttt{initialValues}: A named list containing initial parameter
-  values.
-\item
   \texttt{pAR}: The order of the autoregressive process that should be
   used (if depStruct=``ARp'').
+\item
+  \texttt{initialValues}: A named list containing initial parameter
+  values.
 \end{itemize}
 
 \end{frame}
@@ -329,13 +328,14 @@ following methods/functions are available to these classes:
 
 \end{frame}
 
-\begin{frame}[fragile]{Example: sleepstudy}
-\protect\hypertarget{example-sleepstudy}{}
+\begin{frame}[fragile]{Example: sleepstudy data}
+\protect\hypertarget{example-sleepstudy-data}{}
 
 \tiny
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{#fitting a (CI)-SMN-LMM, default is distr='norm'}
 \NormalTok{fit0<-}\KeywordTok{smn.lmm}\NormalTok{(}\DataTypeTok{data=}\NormalTok{sleepstudy,}\DataTypeTok{formFixed =}\NormalTok{ Reaction}\OperatorTok{~}\NormalTok{Days,}
               \DataTypeTok{formRandom =} \OperatorTok{~}\NormalTok{Days,}\DataTypeTok{groupVar =} \StringTok{"Subject"}\NormalTok{,}\DataTypeTok{quiet =}\NormalTok{ T)}
 \end{Highlighting}
@@ -381,6 +381,7 @@ following methods/functions are available to these classes:
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{#fitting a (CI)-SMSN-LMM, default is distr='sn'}
 \NormalTok{fitskew0<-}\KeywordTok{smsn.lmm}\NormalTok{(}\DataTypeTok{data=}\NormalTok{sleepstudy,}\DataTypeTok{formFixed =}\NormalTok{ Reaction}\OperatorTok{~}\NormalTok{Days,}
               \DataTypeTok{formRandom =} \OperatorTok{~}\NormalTok{Days,}\DataTypeTok{groupVar =} \StringTok{"Subject"}\NormalTok{,}\DataTypeTok{quiet =}\NormalTok{ T)}
 \end{Highlighting}
@@ -490,8 +491,9 @@ scn & 1735.9 & 1767.8\tabularnewline
 
 \end{frame}
 
-\begin{frame}[fragile]{Healy plot}
-\protect\hypertarget{healy-plot}{}
+\begin{frame}[fragile]{Assessing the goodness of fit using a Healy-type
+plot}
+\protect\hypertarget{assessing-the-goodness-of-fit-using-a-healy-type-plot}{}
 
 \small
 
@@ -508,8 +510,8 @@ scn & 1735.9 & 1767.8\tabularnewline
 
 \end{frame}
 
-\begin{frame}[fragile]{LR test for the SCN model}
-\protect\hypertarget{lr-test-for-the-scn-model}{}
+\begin{frame}[fragile]{LR test for \(H_0: \lambda=0\) in the CN-LMM}
+\protect\hypertarget{lr-test-for-h_0-lambda0-in-the-cn-lmm}{}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -536,8 +538,8 @@ scn & 1735.9 & 1767.8\tabularnewline
 
 \end{frame}
 
-\begin{frame}[fragile]{Computing the ACF}
-\protect\hypertarget{computing-the-acf}{}
+\begin{frame}[fragile]{Computing the ACF of the residuals from CN-LMM}
+\protect\hypertarget{computing-the-acf-of-the-residuals-from-cn-lmm}{}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -561,8 +563,8 @@ scn & 1735.9 & 1767.8\tabularnewline
 
 \end{frame}
 
-\begin{frame}[fragile]{Plotting the ACF}
-\protect\hypertarget{plotting-the-acf}{}
+\begin{frame}[fragile]{Plotting the ACF (CI-CN-LMM)}
+\protect\hypertarget{plotting-the-acf-ci-cn-lmm}{}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -667,8 +669,8 @@ cn & DEC & 1716.3 & 1748.2\tabularnewline
 
 \end{frame}
 
-\begin{frame}[fragile]{Healy plot}
-\protect\hypertarget{healy-plot-1}{}
+\begin{frame}[fragile]{Healy plot for the AR(\(p\))-SMN-LMM}
+\protect\hypertarget{healy-plot-for-the-arp-smn-lmm}{}
 
 \small
 
@@ -684,8 +686,8 @@ cn & DEC & 1716.3 & 1748.2\tabularnewline
 
 \end{frame}
 
-\begin{frame}[fragile]{LR test}
-\protect\hypertarget{lr-test}{}
+\begin{frame}[fragile]{LR test for \(H_0: \phi_2=0\) in the CN-LMM}
+\protect\hypertarget{lr-test-for-h_0-phi_20-in-the-cn-lmm}{}
 
 \small
 
@@ -714,29 +716,21 @@ cn & DEC & 1716.3 & 1748.2\tabularnewline
 
 \end{frame}
 
-\begin{frame}[fragile]{ACF plot for AR(1)-SL-LMM}
-\protect\hypertarget{acf-plot-for-ar1-sl-lmm}{}
+\begin{frame}[fragile]{ACF plot for AR(1)-SMN-LMM}
+\protect\hypertarget{acf-plot-for-ar1-smn-lmm}{}
+
+\scriptsize
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot}\NormalTok{(}\KeywordTok{acfresid}\NormalTok{(fit2ar1,}\DataTypeTok{calcCI =}\NormalTok{ T,}\DataTypeTok{maxLag =} \DecValTok{6}\NormalTok{))}
+\KeywordTok{grid.arrange}\NormalTok{(}\KeywordTok{plot}\NormalTok{(}\KeywordTok{acfresid}\NormalTok{(fit2ar1,}\DataTypeTok{calcCI =}\NormalTok{ T,}\DataTypeTok{maxLag =} \DecValTok{6}\NormalTok{))}\OperatorTok{+}
+\StringTok{               }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"AR(1)-SL-LMM"}\NormalTok{),}
+             \KeywordTok{plot}\NormalTok{(}\KeywordTok{acfresid}\NormalTok{(fit3ar1,}\DataTypeTok{calcCI =}\NormalTok{ T,}\DataTypeTok{maxLag =} \DecValTok{6}\NormalTok{))}\OperatorTok{+}
+\StringTok{               }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"AR(1)-CN-LMM"}\NormalTok{), }\DataTypeTok{ncol=}\DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{center}\includegraphics[width=0.85\linewidth]{codes_files/figure-beamer/acf1-1} \end{center}
-
-\end{frame}
-
-\begin{frame}[fragile]{ACF plot for AR(1)-CN-LMM}
-\protect\hypertarget{acf-plot-for-ar1-cn-lmm}{}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{plot}\NormalTok{(}\KeywordTok{acfresid}\NormalTok{(fit3ar1,}\DataTypeTok{calcCI =}\NormalTok{ T,}\DataTypeTok{maxLag =} \DecValTok{6}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{center}\includegraphics[width=0.85\linewidth]{codes_files/figure-beamer/acf2-1} \end{center}
 
 \end{frame}
 
@@ -802,8 +796,8 @@ nu2 & 0.16 & NA\tabularnewline
 
 \end{frame}
 
-\begin{frame}[fragile]{Mahalanobis distance}
-\protect\hypertarget{mahalanobis-distance}{}
+\begin{frame}[fragile]{Mahalanobis distance for AR(1)-SMN-LMM}
+\protect\hypertarget{mahalanobis-distance-for-ar1-smn-lmm}{}
 
 \scriptsize
 
@@ -821,8 +815,9 @@ nu2 & 0.16 & NA\tabularnewline
 
 \end{frame}
 
-\begin{frame}[fragile]{Mahalanobis distance versus \(\hat{u}\)}
-\protect\hypertarget{mahalanobis-distance-versus-hatu}{}
+\begin{frame}[fragile]{Mahalanobis distance versus \(\hat{u}\) for
+AR(1)-SMN-LMM}
+\protect\hypertarget{mahalanobis-distance-versus-hatu-for-ar1-smn-lmm}{}
 
 \scriptsize
 
@@ -842,8 +837,8 @@ nu2 & 0.16 & NA\tabularnewline
 
 \end{frame}
 
-\begin{frame}[fragile]{Plot fit object}
-\protect\hypertarget{plot-fit-object}{}
+\begin{frame}[fragile]{Plot fitted models}
+\protect\hypertarget{plot-fitted-models}{}
 
 \scriptsize
 
@@ -859,8 +854,8 @@ nu2 & 0.16 & NA\tabularnewline
 
 \end{frame}
 
-\begin{frame}[fragile]{Prediction}
-\protect\hypertarget{prediction}{}
+\begin{frame}[fragile]{Prediction of future measurements}
+\protect\hypertarget{prediction-of-future-measurements}{}
 
 \scriptsize
 
