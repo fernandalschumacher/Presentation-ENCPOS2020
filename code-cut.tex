@@ -41,8 +41,10 @@ distributions.
 \begin{frame}[fragile]{Fitting a LMM to the sleepstudy dataset}
 \protect\hypertarget{fitting-a-lmm-to-the-sleepstudy-dataset}{}
 
+\vspace{-.2cm}
 \begin{Shaded}
 \begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(nlme)}
 \NormalTok{fitlme <-}\StringTok{ }\KeywordTok{lme}\NormalTok{(Reaction}\OperatorTok{~}\NormalTok{Days,}\DataTypeTok{data=}\NormalTok{sleepstudy,}
             \DataTypeTok{random=}\OperatorTok{~}\NormalTok{Days}\OperatorTok{|}\NormalTok{Subject)}
 \end{Highlighting}
@@ -778,8 +780,8 @@ cn & DEC & 1716.3 & 1748.2\tabularnewline
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{cbind}\NormalTok{(}\KeywordTok{c}\NormalTok{(fit2ar1}\OperatorTok{$}\NormalTok{theta,}\OtherTok{NA}\NormalTok{),}\KeywordTok{c}\NormalTok{(fit2ar1}\OperatorTok{$}\NormalTok{std.error,}\OtherTok{NA}\NormalTok{),}
-\NormalTok{      fit3ar1}\OperatorTok{$}\NormalTok{theta,fit3ar1}\OperatorTok{$}\NormalTok{std.error) }
+\KeywordTok{cbind}\NormalTok{(}\NormalTok{fit2ar1}\OperatorTok{$}\NormalTok{theta}\NormalTok{,}\NormalTok{fit2ar1}\OperatorTok{$}\NormalTok{std.error}\NormalTok{)}
+\KeywordTok{cbind}\NormalTok{(}\NormalTok{fit3ar1}\OperatorTok{$}\NormalTok{theta,fit3ar1}\OperatorTok{$}\NormalTok{std.error) }
 \end{Highlighting}
 \end{Shaded}
 
@@ -796,8 +798,8 @@ phiAR1 & 0.57 & 0.14 & 0.56 & 0.14\tabularnewline
 Dsqrt1 & 14.21 & 10.15 & 16.90 & 11.82\tabularnewline
 Dsqrt2 & 2.58 & 4.16 & 2.82 & 4.76\tabularnewline
 Dsqrt3 & 2.17 & 6.45 & 2.89 & 6.31\tabularnewline
-nu1 & 1.52 & NA & 0.12 & NA\tabularnewline
-nu2& NA & NA & 0.16 & NA\tabularnewline
+nu1 & 1.52 & - & 0.12 & -\tabularnewline
+nu2& - & - & 0.16 & -\tabularnewline
 \bottomrule
 \end{longtable}
 
