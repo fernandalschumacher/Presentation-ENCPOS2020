@@ -289,7 +289,14 @@ cbind(fit2ar1$theta,fit2ar1$std.error) %>%
 cbind(fit3ar1$theta,fit3ar1$std.error) %>% 
   knitr::kable(digits = 2,col.names = c('estimate','std.error'))
 ```
-
+***
+\scriptsize
+```{r print3, echo=T}
+cbind(c(fit2ar1$theta,NA),c(fit2ar1$std.error,NA),
+      fit3ar1$theta,fit3ar1$std.error) %>% 
+  knitr::kable(digits = 2,col.names = 
+                 c('estimate','std.error','estimate','std.error'))
+```
 
 ## Mahalanobis distance for AR(1)-SMN-LMM
 \scriptsize

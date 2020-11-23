@@ -796,6 +796,38 @@ nu2 & 0.16 & NA\tabularnewline
 
 \end{frame}
 
+\begin{frame}[fragile]
+
+\scriptsize
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cbind}\NormalTok{(}\KeywordTok{c}\NormalTok{(fit2ar1}\OperatorTok{$}\NormalTok{theta,}\OtherTok{NA}\NormalTok{),}\KeywordTok{c}\NormalTok{(fit2ar1}\OperatorTok{$}\NormalTok{std.error,}\OtherTok{NA}\NormalTok{),}
+\NormalTok{      fit3ar1}\OperatorTok{$}\NormalTok{theta,fit3ar1}\OperatorTok{$}\NormalTok{std.error) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}\DataTypeTok{digits =} \DecValTok{2}\NormalTok{,}\DataTypeTok{col.names =} 
+                 \KeywordTok{c}\NormalTok{(}\StringTok{'estimate'}\NormalTok{,}\StringTok{'std.error'}\NormalTok{,}\StringTok{'estimate'}\NormalTok{,}\StringTok{'std.error'}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrrrr@{}}
+\toprule
+& estimate & std.error & estimate & std.error\tabularnewline
+\midrule
+\endhead
+(Intercept) & 251.55 & 7.56 & 252.55 & 7.02\tabularnewline
+Days & 9.81 & 1.66 & 9.99 & 1.57\tabularnewline
+sigma2 & 266.24 & 63.43 & 417.84 & 78.77\tabularnewline
+phiAR1 & 0.57 & 0.14 & 0.56 & 0.14\tabularnewline
+Dsqrt1 & 14.21 & 10.15 & 16.90 & 11.82\tabularnewline
+Dsqrt2 & 2.58 & 4.16 & 2.82 & 4.76\tabularnewline
+Dsqrt3 & 2.17 & 6.45 & 2.89 & 6.31\tabularnewline
+nu1 & 1.52 & NA & 0.12 & NA\tabularnewline
+& NA & NA & 0.16 & NA\tabularnewline
+\bottomrule
+\end{longtable}
+
+\end{frame}
+
 \begin{frame}[fragile]{Mahalanobis distance for AR(1)-SMN-LMM}
 \protect\hypertarget{mahalanobis-distance-for-ar1-smn-lmm}{}
 
